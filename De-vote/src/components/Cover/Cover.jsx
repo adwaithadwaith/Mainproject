@@ -60,9 +60,7 @@ function Cover() {
               </div>
             </form>
         </div> 
-        <div className='description'>
-          <p> Don't have an account? <Link className='text-blue-800' to="/signup">Register</Link></p>
-        </div>       
+               
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './AdminLogin.css';
 import { useNavigate } from 'react-router-dom';
+import NavBar from '../../components/NavBar/NavBar';
 
 function AdminLogin() {
   const [adminId, setAdminId] = useState('');
@@ -39,12 +40,7 @@ function AdminLogin() {
 
   return (
     <div className='adminlogin'>
-      <div className='navbar'>
-        <div className='img'><img className='logo' src="https://creazilla-store.fra1.digitaloceanspaces.com/icons/3262425/how-to-vote-icon-sm.png" alt="" /></div>
-        <div className='text'>
-          <h1 className='devote text-2xl font-bold'>De-Vote</h1>
-        </div>
-      </div>
+      <NavBar/>
       <div className='adm'>
         <div className='login'>
           <div className="title"><h3 className='txt'>Admin Login</h3></div>
