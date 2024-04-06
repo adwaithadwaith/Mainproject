@@ -2,41 +2,48 @@ import React, { useState } from 'react';
 import './AdminLogin.css';
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../../components/NavBar/NavBar';
+import { useAuthContext } from '../../hooks/useAuthContext';
+
 
 function AdminLogin() {
   const [adminId, setAdminId] = useState('');
   const [password, setPassword] = useState('');
 
   const navigate = useNavigate()
+  const {login} = useAuthContext()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Create an object with admin details
+  
+    // Assuming adminId and password are correctly defined in your component's state
     const adminData = { email: adminId, password: password };
-    console.log(adminData);
-
+  
     try {
       const response = await fetch('http://localhost:3000/admin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(adminData), // Convert admin details to JSON
+        body: JSON.stringify(adminData),
       });
-      
+  
       if (!response.ok) {
         throw new Error('Failed to login as admin');
       }
-
-      // You might want to do something upon successful login, such as redirecting the user
-      navigate('/dashboard')
-
+  
+      const data = await response.json(); // Extract the JSON payload from the response
+      console.log(data)
+      // Assuming you have a context or some state management to update
+      // Replace `login` with however you're managing state; for example, through a context provider
+      login(data); // Make sure `login` is ready to handle this object, including the token and userType
+  
+      navigate('/dashboard'); // Make sure `navigate` is defined, usually via `useNavigate` from react-router-dom
     } catch (error) {
-      console.error('Error logging in as admin:', error);
-      // Handle error, such as displaying an error message to the user
+      console.error('Error logging in as admin:', error.message);
+      // Here, handle displaying the error to the user
     }
   };
+  
 
   return (
     <div className='adminlogin'>
@@ -50,7 +57,7 @@ function AdminLogin() {
                   className='h-9 w-3/4 rounded-lg ml-10 mt-0' 
                   type="text" 
                   name='ID' 
-                  placeholder='ID' 
+                  placeholder='Email' 
                   value={adminId} 
                   onChange={(e) => setAdminId(e.target.value)}
                 />

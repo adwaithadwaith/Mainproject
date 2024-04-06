@@ -9,6 +9,7 @@ function Cover() {
   const [password, setPassword] = useState('');
 
   const navigate = useNavigate();
+  const {login} = useAuthContext()
  
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,10 +30,11 @@ function Cover() {
   const responseData = await response.json();
 
   // Assuming the JWT is in the response body under the key 'token'
-        const { token } = responseData;
-
+        const { token,userType } = responseData;
+      
         // Store the JWT token in local storage
         localStorage.setItem('jwt', token);
+        login(responseData);
         // Login successful
   console.log('Login successful');
 

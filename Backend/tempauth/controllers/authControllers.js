@@ -7,7 +7,7 @@ const { generateRandomPassword } = require('../utils/passwordGenerator');
 const nodemailer = require('nodemailer');
 
 
-module.exports.signup_post = async (req, res) => {
+module.exports.pologin_post = async (req, res) => {
     const { email, ktuid, password } = req.body;
 
     try {
@@ -39,7 +39,7 @@ module.exports.login_post = async (req, res) => {
         const token = jwt.sign({ userId: user._id }, 'eth-voting', { expiresIn: '1h' });
 
         // Set the JWT token as a cookie
-        res.status(200).json({ email,token }); // 1 hour expiration time
+        res.status(200).json({ token, userType: 'voter' }); // 1 hour expiration time
         // Log the cookie to console for testing
         console.log('JWT token sent to the client:', token);
 
@@ -168,11 +168,14 @@ module.exports.admin_login_post = async (req, res) => {
         if (!passwordMatch) {
             return res.status(400).json({ error: 'Invalid credentials' });
         }
-        const token = jwt.sign({ adminId: admin._id }, 'your_secret_key', { expiresIn: '1h' });
+        const token = jwt.sign({ adminId: admin._id, userType: 'admin' }, 'your_secret_key', { expiresIn: '1h' });
+        
 
         res.cookie('jwt', token, { httpOnly: true, maxAge: 3600000 }); 
 
-        res.status(200).json({ message: 'Login successful', admin });
+        res.status(200).json({ token, userType: 'admin' });
+        console.log('JWT token sent to the client:', token);
+
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Server error' });
