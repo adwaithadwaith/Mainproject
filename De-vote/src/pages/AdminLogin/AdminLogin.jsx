@@ -1,53 +1,50 @@
 import React, { useState } from 'react';
 import './AdminLogin.css';
 import { useNavigate } from 'react-router-dom';
-import NavBar from '../../components/NavBar/NavBar';
-import { useAuthContext } from '../../hooks/useAuthContext';
-
 
 function AdminLogin() {
   const [adminId, setAdminId] = useState('');
   const [password, setPassword] = useState('');
 
   const navigate = useNavigate()
-  const {login} = useAuthContext()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    // Assuming adminId and password are correctly defined in your component's state
+
+    // Create an object with admin details
     const adminData = { email: adminId, password: password };
-  
+    console.log(adminData);
+
     try {
       const response = await fetch('http://localhost:3000/admin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(adminData),
+        body: JSON.stringify(adminData), // Convert admin details to JSON
       });
-  
+      
       if (!response.ok) {
         throw new Error('Failed to login as admin');
       }
-  
-      const data = await response.json(); // Extract the JSON payload from the response
-      console.log(data)
-      // Assuming you have a context or some state management to update
-      // Replace `login` with however you're managing state; for example, through a context provider
-      login(data); // Make sure `login` is ready to handle this object, including the token and userType
-  
-      navigate('/dashboard'); // Make sure `navigate` is defined, usually via `useNavigate` from react-router-dom
+
+      // You might want to do something upon successful login, such as redirecting the user
+      navigate('/dashboard')
+
     } catch (error) {
-      console.error('Error logging in as admin:', error.message);
-      // Here, handle displaying the error to the user
+      console.error('Error logging in as admin:', error);
+      // Handle error, such as displaying an error message to the user
     }
   };
-  
 
   return (
     <div className='adminlogin'>
-      <NavBar/>
+      <div className='navbar'>
+        <div className='img'><img className='logo' src="https://creazilla-store.fra1.digitaloceanspaces.com/icons/3262425/how-to-vote-icon-sm.png" alt="" /></div>
+        <div className='text'>
+          <h1 className='devote text-2xl font-bold'>De-Vote</h1>
+        </div>
+      </div>
       <div className='adm'>
         <div className='login'>
           <div className="title"><h3 className='txt'>Admin Login</h3></div>
@@ -57,7 +54,7 @@ function AdminLogin() {
                   className='h-9 w-3/4 rounded-lg ml-10 mt-0' 
                   type="text" 
                   name='ID' 
-                  placeholder='Email' 
+                  placeholder='ID' 
                   value={adminId} 
                   onChange={(e) => setAdminId(e.target.value)}
                 />

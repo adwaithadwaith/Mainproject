@@ -9,7 +9,6 @@ function Cover() {
   const [password, setPassword] = useState('');
 
   const navigate = useNavigate();
-  const {login} = useAuthContext()
  
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,11 +29,10 @@ function Cover() {
   const responseData = await response.json();
 
   // Assuming the JWT is in the response body under the key 'token'
-        const { token,userType } = responseData;
-      
+        const { token } = responseData;
+
         // Store the JWT token in local storage
         localStorage.setItem('jwt', token);
-        login(responseData);
         // Login successful
   console.log('Login successful');
 
@@ -62,7 +60,9 @@ function Cover() {
               </div>
             </form>
         </div> 
-               
+        <div className='description'>
+          <p> Don't have an account? <Link className='text-blue-800' to="/signup">Register</Link></p>
+        </div>       
       </div>
     </div>
   );

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './POLogin.css';
+import './RegisterForm.css';
 import NavBar from '../../components/NavBar/NavBar';
 import { Link } from 'react-router-dom';
 
-function POLogin() { 
+function RegisterForm() { 
   const [email, setEmail] = useState('');
   const [ktuid, setKtuid] = useState('');
   const [password, setPassword] = useState('');
@@ -41,7 +41,7 @@ function POLogin() {
         <NavBar />
         <div className="register">
             <div className='login'>
-                <div className="title"><h3 className='txt'>Presiding Officer</h3></div>
+                <div className="title"><h3 className='txt'>Voter Register</h3></div>
                 <div className="form">
                     <form onSubmit={handleSubmit}>
                         <input
@@ -52,7 +52,14 @@ function POLogin() {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
-        
+                        <input
+                            className='h-9 w-3/4 rounded-lg ml-10 mt-4'
+                            type="text"
+                            name='ktuid'
+                            placeholder='KTU ID'
+                            value={ktuid}
+                            onChange={(e) => setKtuid(e.target.value)}
+                        />
                         <input
                             className='h-9 w-3/4 rounded-lg ml-10 mt-[15px]'
                             type='password'
@@ -62,15 +69,17 @@ function POLogin() {
                             onChange={(e) => setPassword(e.target.value)}
                         />
                         <div className='pt-4 pr-11 flex justify-end'>
-                            <input className='h-7 w-1/4 bg-purple-800 rounded-lg text-white cursor-pointer mr-[16px]' type='submit' value='Login'/>
+                            <input className='h-7 w-1/4 bg-purple-800 rounded-lg text-white cursor-pointer mr-[16px]' type='submit' value='Register'/>
                         </div>
                     </form>
                 </div> 
-                       
+                <div className='description'>
+                    <p>Already have an account? <Link className='text-blue-800' to="/">Login</Link></p>
+                </div>       
             </div>
         </div>
     </div>
   );
 }
 
-export default POLogin;
+export default RegisterForm;

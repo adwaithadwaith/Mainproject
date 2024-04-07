@@ -7,7 +7,7 @@ const { generateRandomPassword } = require('../utils/passwordGenerator');
 const nodemailer = require('nodemailer');
 
 
-module.exports.pologin_post = async (req, res) => {
+module.exports.signup_post = async (req, res) => {
     const { email, ktuid, password } = req.body;
 
     try {
@@ -39,7 +39,7 @@ module.exports.login_post = async (req, res) => {
         const token = jwt.sign({ userId: user._id }, 'eth-voting', { expiresIn: '1h' });
 
         // Set the JWT token as a cookie
-        res.status(200).json({ token, userType: 'voter' }); // 1 hour expiration time
+        res.status(200).json({ email,token }); // 1 hour expiration time
         // Log the cookie to console for testing
         console.log('JWT token sent to the client:', token);
 
@@ -168,20 +168,85 @@ module.exports.admin_login_post = async (req, res) => {
         if (!passwordMatch) {
             return res.status(400).json({ error: 'Invalid credentials' });
         }
-        const token = jwt.sign({ adminId: admin._id, userType: 'admin' }, 'your_secret_key', { expiresIn: '1h' });
-        
+        const token = jwt.sign({ adminId: admin._id }, 'your_secret_key', { expiresIn: '1h' });
 
         res.cookie('jwt', token, { httpOnly: true, maxAge: 3600000 }); 
 
-        res.status(200).json({ token, userType: 'admin' });
-        console.log('JWT token sent to the client:', token);
-
+        res.status(200).json({ message: 'Login successful', admin });
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Server error' });
     }
 };
 
+module.exports.election_type_get = async (req, res) => {
+    try {
+        const electionTypes = await Candidate.distinct('electionType');
+        res.status(200).json({ electionTypes });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
+module.exports.type_candidate_get = async (req, res) => {
+    try {
+        const { electionType } = req.body;
+        
+        // Query candidates based on the provided electionType
+        const candidates = await Candidate.find({ electionType });
+
+        if (candidates.length === 0) {
+            return res.status(404).json({ message: 'No candidates found for the provided election type.' });
+        }
+
+        // Return the found candidates
+        res.status(200).json({ candidates });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
+module.exports.all_candidate_get = async (req, res) => {
+    try {
+        const uniqueElectionTypes = await Candidate.distinct('electionType');
+
+        const candidatesByType = {};
+
+        for (const type of uniqueElectionTypes) {
+            const candidates = await Candidate.find({ electionType: type });
+
+            const candidateNames = candidates.map(candidate => `${candidate.firstName} ${candidate.middleName ? candidate.middleName + ' ' : ''}${candidate.lastName}`);
+
+            candidatesByType[type] = candidateNames;
+        }
+
+        // Return the result as JSON
+        res.status(200).json(candidatesByType);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+module.exports.dashboard_get = async (req, res) => {
+    try {
+        // Retrieve total number of registered users
+        const totalUsers = await User.countDocuments();
+
+        // Retrieve unique election types
+        const uniqueElectionTypes = await Candidate.distinct('electionType');
+
+        // Count the number of unique election types
+        const numElectionTypes = uniqueElectionTypes.length;
+
+        // Return the data
+        res.status(200).json({ totalUsers, numElectionTypes });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
 
 // delete all collection
 
