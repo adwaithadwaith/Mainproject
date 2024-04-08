@@ -16,13 +16,16 @@ const AuthReducer = (state, action) => {
 export const AuthContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AuthReducer, { user: null });
 
-  const login = (userData) => {
-    localStorage.setItem('jwt', JSON.stringify(userData.token)); // Assuming userData has a token property
-    dispatch({ type: 'LOGIN', payload: userData });
+  const login = ({ token, userType }) => {
+    localStorage.setItem('token', token);
+    localStorage.setItem('userType', userType);
+    // Update context state with both token and userType
+    dispatch({ type: 'LOGIN', payload: { token, userType } });
   };
 
   const logout = () => {
     localStorage.removeItem('jwt');
+    localStorage.removeItem('userType')
     dispatch({ type: 'LOGOUT' });
   };
 

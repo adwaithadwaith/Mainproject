@@ -55,6 +55,7 @@ function MetamaskButton() {
         const account = accounts[0];
         updateAccount(account);
         console.log("Connected account:", account);
+        alert("connected to metamask")
       } else {
         console.log("Non-ethereum browser detected. Please install Metamask.");
       }

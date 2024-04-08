@@ -33,9 +33,9 @@ function Elections() {
     );
     console.log(candidateNames)
     creatElection(account, contract, [selectedType], [candidateNames]);
-    console.log('voting')
-    castVote(account,contract)
-    console.log('voted')
+    // console.log('voting')
+    // castVote(account,contract)
+    // console.log('voted')
 
   }
   const fetchCandidates = async () => {

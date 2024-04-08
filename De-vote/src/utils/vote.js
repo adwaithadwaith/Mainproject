@@ -4,8 +4,9 @@ const castVote = async (account, contract, postIndex, candidateIndex) => {
     console.log(account)
   
     try {
+      console.log(postIndex,candidateIndex)
       await contract.methods
-        .vote(0,0 )
+        .vote(postIndex,candidateIndex )
         .send({
           from: account,
           gas: 3000000,
