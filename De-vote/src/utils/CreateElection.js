@@ -13,15 +13,15 @@ const creatElection = async (account,contract,postNames, candidateNames) => {
       .createElection(postNames, candidateNames, durationInMinutes)
       .send({
         from: account,
-        gas: 3000000,
-      }) // Replace with your actual address
+        // gas: 3000000,
+      }) 
       .then((result) => {
         console.log("Election created successfully:", result);
-        // Handle the result or perform additional actions
+        alert("Election created successfully")
       })
       .catch((error) => {
         console.error("Error creating election:", error);
-        // Handle the error
+        
       });
   };
 

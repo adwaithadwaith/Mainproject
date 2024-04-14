@@ -13,6 +13,7 @@ const castVote = async (account, contract, postIndex, candidateIndex) => {
         })
         .then((result) => {
           console.log("Vote cast successfully:", result);
+          alert("vote submitted")
           
           // Handle successful vote (e.g., display confirmation message)
         })

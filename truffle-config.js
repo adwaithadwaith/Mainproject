@@ -44,8 +44,8 @@
 // require('dotenv').config();
 // const { MNEMONIC, PROJECT_ID } = process.env;
 
-// const HDWalletProvider = require('@truffle/hdwallet-provider');
-
+const HDWalletProvider = require('@truffle/hdwallet-provider');
+const mnemonic = 'announce drastic again doctor youth grant track axis alarm business suspect orbit'
 module.exports = {
   /**
    * Networks define how you connect to your ethereum client and let you set the
@@ -69,6 +69,12 @@ module.exports = {
      port: 7545,            // Standard Ethereum port (default: none)
      network_id: "*",       // Any network (default: none)
     },
+    sepolia: {
+      provider: function() {
+        return new HDWalletProvider(mnemonic, "https://sepolia.infura.io/v3/dc82468c8749469bb386575d99b574d6")
+      },
+      network_id: 11155111
+    }
     //
     // An additional network, but with some advanced options…
     // advanced: {

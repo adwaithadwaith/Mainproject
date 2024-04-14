@@ -65,10 +65,10 @@ module.exports.candidate_get = async (req, res) => {
 };
 
 module.exports.candidate_delete_post = async (req, res) => {
-    const { candidateID } = req.body;
+    const { _id } = req.body;
 
     try {
-        const deletedCandidate = await Candidate.findOneAndDelete({ candidateID });
+        const deletedCandidate = await Candidate.findOneAndDelete({ _id });
 
         if (!deletedCandidate) {
             return res.status(404).json({ error: 'Candidate not found' });

@@ -27,7 +27,7 @@ function TableCandidates({ data, columns }) {
     onGlobalFilterChange: setFiltering,
   });
 
-  const handleDelete = async (candidateID) => {
+  const handleDelete = async (_id) => {
     try {
       // Show confirmation dialog to confirm deletion
       const isConfirmed = window.confirm('Are you sure you want to delete this candidate?');
@@ -40,7 +40,7 @@ function TableCandidates({ data, columns }) {
   
       // Send the deletion request to the server
       const requestData = {
-        candidateID: candidateID
+        _id: _id
       };
   
       const response = await fetch(`http://localhost:3000/candidate-delete`, {
@@ -53,7 +53,7 @@ function TableCandidates({ data, columns }) {
   
       if (response.ok) {
         // Log success message
-        console.log(`Candidate with ID ${candidateID} has been deleted successfully.`);
+        console.log(`Candidate with ID ${_id} has been deleted successfully.`);
         
       } else {
         // Log error message if deletion failed
@@ -118,7 +118,7 @@ function TableCandidates({ data, columns }) {
               <td>
                 <button
                   className='bg-red-500 text-white p-2 rounded-md hover:shadow-md '
-                  onClick={() => handleDelete(row.original.candidateID)}
+                  onClick={() => handleDelete(row.original._id)}
                 >
                   Delete
                 </button>

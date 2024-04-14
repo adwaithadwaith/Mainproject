@@ -34,7 +34,7 @@ function ElectionCard({ cardname, candidates }) {
 
     // console.log(account, contract, candidatePosition, selectedCandidate);
     casteVote(account, contract, candidatePosition, selectedCandidate);
-    alert("Vote submitted!");
+    
   };
 
   const handleCandidateSelection = (e) => {

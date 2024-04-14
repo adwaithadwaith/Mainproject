@@ -16,17 +16,17 @@ contract MultiPostVoting {
   Post[] public posts;
   Candidate[] public candidates;
   address public owner;
-  mapping(address => bool) public voters;
+  mapping(address => mapping(uint256 => bool)) public votersByPost;
 
   uint256 public votingStart;
   uint256 public votingEnd;
 
-  event AlreadyVoted(address indexed voter);
+  event AlreadyVoted(address indexed voter, uint256 indexed postIndex);
   event CandidateAdded(uint256 indexed candidateIndex, string name);
   event ElectionCreated(uint256 indexed electionId, string[] postNames);
   event VoteCast(address indexed voter, uint256 indexed postIndex, uint256 indexed candidateIndex);
 
-  constructor() public  {
+  constructor() public {
     owner = msg.sender;
   }
 
@@ -80,16 +80,15 @@ contract MultiPostVoting {
   }
 
   function vote(uint256 _postIndex, uint256 _candidateIndex) public {
-    require(!voters[msg.sender], "You have already voted.");
     require(_postIndex < posts.length, "Invalid post index");
     require(_candidateIndex < posts[_postIndex].candidateIndexes.length, "Invalid candidate index.");
     require(block.timestamp <= votingEnd, "Voting has ended");
+    require(!votersByPost[msg.sender][_postIndex], "You have already voted for this post.");
 
     uint256 candidateIndex = posts[_postIndex].candidateIndexes[_candidateIndex];
     candidates[candidateIndex].voteCount++;
-    voters[msg.sender] = true;
+    votersByPost[msg.sender][_postIndex] = true;
 
-    emit AlreadyVoted(msg.sender);
     emit VoteCast(msg.sender, _postIndex, candidateIndex);
   }
 
@@ -128,4 +127,23 @@ contract MultiPostVoting {
     return votes;
   }
 
+  function deleteAllPostsAndCandidates() public onlyOwner {
+  // Delete all candidates
+  for (uint256 i = 0; i < candidates.length; i++) {
+    delete candidates[i];
+  }
+
+  // Delete all posts
+  for (uint256 i = 0; i < posts.length; i++) {
+    delete posts[i];
+  }
+  for (uint256 i = 0; i < posts.length; i++) {
+    uint256[] storage candidateIndexes = posts[i].candidateIndexes;
+    for (uint256 j = 0; j < candidateIndexes.length; j++) {
+      uint256 candidateIndex = candidateIndexes[j];
+      votersByPost[msg.sender][i] = false;
+      votersByPost[msg.sender][candidateIndex] = false;
+    }
+  }
+}
 }

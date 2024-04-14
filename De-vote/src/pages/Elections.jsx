@@ -31,6 +31,8 @@ function Elections() {
     const candidateNames = candidates.map(candidate => 
       `${candidate.firstName} ${candidate.middleName} ${candidate.lastName}`
     );
+
+    console.log("inside start election",account)
     console.log(candidateNames)
     creatElection(account, contract, [selectedType], [candidateNames]);
     // console.log('voting')

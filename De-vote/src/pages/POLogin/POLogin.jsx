@@ -35,10 +35,12 @@ function POLogin() {
         navigate('/dashboard');
         // Perform any actions after successful registration, e.g., redirect to login page
       } else {
-        console.log('Failed to register123', response);
+        alert('Failed to login')
+        console.log('Failed to login', response);
       }
     } catch (error) {
-      console.error('Failed to register', error);
+      alert('Failed to login')
+      console.error('Failed to login', error);
     }
   };
 

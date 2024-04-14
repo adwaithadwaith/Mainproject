@@ -42,7 +42,7 @@ function Cover() {
   navigate('/vote');
 } else {
   // Handle login failure (e.g., invalid credentials)
-  console.log('Login failed');
+  alert('Login failed');
 }
     } catch (error) {
       console.error('Login error:', error);

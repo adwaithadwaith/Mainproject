@@ -39,6 +39,7 @@ function AdminLogin() {
   
       navigate('/dashboard'); // Make sure `navigate` is defined, usually via `useNavigate` from react-router-dom
     } catch (error) {
+      alert('Failed to login')
       console.error('Error logging in as admin:', error.message);
       // Here, handle displaying the error to the user
     }
